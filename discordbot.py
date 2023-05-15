@@ -11,6 +11,21 @@ TOKEN = os.environ['TOKEN']
 
 client = discord.Client()
 
+update_txt = """13.9 패치
+
+상향
+코르키: 받는 피해량 95% ⇒ 받는 피해량 90%
+이즈리얼: 입히는 피해량 95% ⇒ 입히는 피해량 100%
+카르마: 입히는 피해량 100% ⇒ 입히는 피해량 105%
+트리스타나: 입히는 피해량 100% ⇒ 입히는 피해량 105%
+질리언: 받는 피해량 95% ⇒ 받는 피해량 90%
+
+하향
+아칼리: 입히는 피해량 110% ⇒ 입히는 피해량 105%
+오른: 받는 피해량 105%⇒ 받는 피해량 110%
+키아나: 입히는 피해량 115% ⇒ 입히는 피해량 110%
+베이가: 받는 피해량 105% ⇒ 받는 피해량 110%, 입히는 피해량 95% ⇒ 입히는 피해량 90%"""
+
 champs = ['가렌',
 '갈리오',
 '갱플랭크',
@@ -184,7 +199,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
+    
     if message.content == f'{PREFIX}랜덤픽':
         team1 = []
         team2 = []
@@ -204,7 +219,10 @@ async def on_message(message):
         result = "1팀 : "+', '.join(list(map(lambda x:champs[x],team1)))+"\n2팀 : "+', '.join(list(map(lambda x:champs[x],team2)))
 
         await message.channel.send(result)
-
+    
+    if message.content == f'{PREFIX}업데이트':
+        await message.channel.send(update_txt)
+        
     if message.content.startswith(f'{PREFIX}hello'):
         await message.channel.send('Hello!')
 
