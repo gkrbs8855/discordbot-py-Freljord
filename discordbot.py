@@ -200,6 +200,7 @@ async def on_message(message):
     
     if message.content == f'{PREFIX}help':
         help_txt = '!랜덤픽, !업데이트, !밴리스트, !밴추가 [챔피언풀네임], !밴삭제 [챔피언풀네임], !밴초기화'
+        await message.channel.send(help_txt)
 
     if message.content == f'{PREFIX}랜덤픽':
         team1 = []
@@ -223,7 +224,7 @@ async def on_message(message):
     if message.content == f'{PREFIX}업데이트':
         await message.channel.send(update_txt)
     
-    if message.content == f'{PREFIX}밴추가':
+    if message.content.startswith(f'{PREFIX}밴추가'):
         champ_name = message.content[5:len(message.content)]
         if champ_name in champs:
             ban_list.append(champ_name)
@@ -233,7 +234,7 @@ async def on_message(message):
             result = champ_name + '밴 추가 실패'
             await message.channel.send(result)
           
-    if message.content == f'{PREFIX}밴삭제':
+    if message.content.startswith(f'{PREFIX}밴삭제'):
         champ_name = message.content[5:len(message.content)]
         if champ_name in ban_list:
             ban_list.remove(champ_name)
