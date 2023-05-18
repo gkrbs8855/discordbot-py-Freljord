@@ -22,6 +22,8 @@ update_txt = ('13.10 패치\n\n'
 '밀리오: 보호막 흡수량 100% ⇒ 보호막 흡수량 95%, 체력 회복량 100% ⇒ 체력 회복량 95%\n'
 '쉔: 받는 피해량 100% ⇒ 받는 피해량 105%\n')
 
+ban_list = ['아우렐리온 솔']
+
 champs = ['가렌',
 '갈리오',
 '갱플랭크',
@@ -187,7 +189,7 @@ champs = ['가렌',
 '헤카림'
 ]
 
-ban_list = []
+
 
 @client.event
 async def on_ready():
@@ -208,7 +210,9 @@ async def on_message(message):
         i=0
         while i<20:
             ran_num = random.randint(0,len(champs)-1)
-            if ran_num not in team1 and ran_num not in team2:
+            if champs[ran_num] in ban_list:
+                i=i
+            elif ran_num not in team1 and ran_num not in team2:
                 i+=1
                 if len(team1)<10:
                     team1.append(ran_num)
@@ -245,7 +249,7 @@ async def on_message(message):
             await message.channel.send(result)
             
     if message.content == f'{PREFIX}밴초기화':
-        ban_list = []
+        ban_list.clear()
         await message.channel.send('밴초기화 성공')
         
     if message.content == f'{PREFIX}밴리스트':
