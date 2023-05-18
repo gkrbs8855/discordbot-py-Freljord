@@ -11,6 +11,7 @@ TOKEN = os.environ['TOKEN']
 
 client = discord.Client()
 
+
 update_txt = ('13.10 패치\n\n'
                 '상향\n'
 '나르: 입히는 피해량 100% ⇒ 입히는 피해량 105%\n'
@@ -103,7 +104,7 @@ champs = ['가렌',
 '쓰레쉬',
 '아리',
 '아무무',
-#'아우렐리온 솔',
+'아우렐리온 솔',
 '아이번',
 '아지르',
 '아칼리',
@@ -186,6 +187,8 @@ champs = ['가렌',
 '헤카림'
 ]
 
+ban_list = []
+
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}.')
@@ -195,6 +198,9 @@ async def on_message(message):
     if message.author == client.user:
         return
     
+    if message.content == f'{PREFIX}help':
+        help_txt = '!랜덤픽, !업데이트, !밴리스트, !밴추가 [챔피언풀네임], !밴삭제 [챔피언풀네임], !밴초기화'
+
     if message.content == f'{PREFIX}랜덤픽':
         team1 = []
         team2 = []
@@ -204,7 +210,6 @@ async def on_message(message):
             if ran_num not in team1 and ran_num not in team2:
                 i+=1
                 if len(team1)<10:
-
                     team1.append(ran_num)
                 else:
                     team2.append(ran_num)
@@ -217,6 +222,34 @@ async def on_message(message):
     
     if message.content == f'{PREFIX}업데이트':
         await message.channel.send(update_txt)
+    
+    if message.content == f'{PREFIX}밴추가':
+        champ_name = message.content[5:len(message.content)]
+        if champ_name in champs:
+            ban_list.append(champ_name)
+            result = champ_name + '밴 추가 성공'
+            await message.channel.send(result)
+        else:
+            result = champ_name + '밴 추가 실패'
+            await message.channel.send(result)
+          
+    if message.content == f'{PREFIX}밴삭제':
+        champ_name = message.content[5:len(message.content)]
+        if champ_name in ban_list:
+            ban_list.remove(champ_name)
+            result = champ_name + '밴 삭제 성공'
+            await message.channel.send(result)   
+        else:
+            result = champ_name + '밴 삭제 실패'
+            await message.channel.send(result)
+            
+    if message.content == f'{PREFIX}밴초기화':
+        ban_list = []
+        await message.channel.send('밴초기화 성공')
+        
+    if message.content == f'{PREFIX}밴리스트':
+        result = ', '.join(list(map(lambda x:x,ban_list)))
+        await message.channel.send(result)
         
     if message.content.startswith(f'{PREFIX}hello'):
         await message.channel.send('Hello!')
